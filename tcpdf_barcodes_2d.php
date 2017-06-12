@@ -260,6 +260,34 @@ class TCPDF2DBarcode {
 				$this->barcode_array['code'] = $code;
 				break;
 			}
+			case 'DATAMATRIX_BASE256': { // DATAMATRIX FORCE BASE256 ENCODE
+				require_once(dirname(__FILE__).'/include/barcodes/datamatrix.php');
+				$qrcode = new Datamatrix($code,'ENC_BASE256');
+				$this->barcode_array = $qrcode->getBarcodeArray();
+				$this->barcode_array['code'] = $code;
+				break;
+			}
+			case 'DATAMATRIX_C40': { // DATAMATRIX FORCE C40 ENCODE
+				require_once(dirname(__FILE__).'/include/barcodes/datamatrix.php');
+				$qrcode = new Datamatrix($code,'ENC_C40');
+				$this->barcode_array = $qrcode->getBarcodeArray();
+				$this->barcode_array['code'] = $code;
+				break;
+			}
+			case 'DATAMATRIX_TEXT': { // DATAMATRIX FORCE TEXT ENCODE
+				require_once(dirname(__FILE__).'/include/barcodes/datamatrix.php');
+				$qrcode = new Datamatrix($code,'ENC_TXT');
+				$this->barcode_array = $qrcode->getBarcodeArray();
+				$this->barcode_array['code'] = $code;
+				break;
+			}
+			case 'DATAMATRIX_ASCII': { // DATAMATRIX FORCE ASCII ENCODE
+				require_once(dirname(__FILE__).'/include/barcodes/datamatrix.php');
+				$qrcode = new Datamatrix($code,'ENC_ASCII');
+				$this->barcode_array = $qrcode->getBarcodeArray();
+				$this->barcode_array['code'] = $code;
+				break;
+			}
 			case 'PDF417': { // PDF417 (ISO/IEC 15438:2006)
 				require_once(dirname(__FILE__).'/include/barcodes/pdf417.php');
 				if (!isset($mode[1]) OR ($mode[1] === '')) {

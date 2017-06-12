@@ -120,6 +120,12 @@ class Datamatrix {
 	 * @protected
 	 */
 	protected $last_enc = ENC_ASCII;
+	
+	/**
+	 * Set forced encoding.
+	 * @protected
+	 */
+	protected $force_enc = null;
 
 	/**
 	 * Table of Data Matrix ECC 200 Symbol Attributes:<ul>
@@ -232,7 +238,33 @@ class Datamatrix {
 	 * @param $code (string) Code to represent using Datamatrix.
 	 * @public
 	 */
-	public function __construct($code) {
+	public function __construct($code,$forced_encoding = null) {
+		switch($forced_encoding){
+			case 'ENC_ASCII':
+				$this->force_enc = 'ENC_ASCII';
+				break;
+			case 'ENC_C40':
+				$this->force_enc = 'ENC_C40';
+				break;
+			case 'ENC_TXT':
+				$this->force_enc = 'ENC_TXT';
+				break;
+			case 'ENC_X12':
+				$this->force_enc = 'ENC_X12';
+				break;
+			case 'ENC_EDF':
+				$this->force_enc = 'ENC_EDF';
+				break;
+			case 'ENC_BASE256':
+				$this->force_enc = 'ENC_BASE256';
+				break;
+			case 'ENC_ASCII_EXT':
+				$this->force_enc = 'ENC_ASCII_EXT';
+				break;
+			case 'ENC_ASCII_NUM':
+				$this->force_enc = 'ENC_ASCII_NUM';
+				break;
+		}
 		$barcode_array = array();
 		if ((is_null($code)) OR ($code == '\0') OR ($code == '')) {
 			return false;
@@ -706,14 +738,14 @@ class Datamatrix {
 	 */
 	protected function getHighLevelEncoding($data) {
 		// STEP A. Start in ASCII encodation.
-		$enc = ENC_ASCII; // current encoding mode
+		$enc = !empty($this->force_enc) ? $this->force_enc : ENC_ASCII; // current encoding mode
 		$pos = 0; // current position
 		$cw = array(); // array of codewords to be returned
 		$cw_num = 0; // number of data codewords
 		$data_length = strlen($data); // number of chars
 		while ($pos < $data_length) {
 			// set last used encoding
-			$this->last_enc = $enc;
+			$this->last_enc = !empty($this->force_enc) ? $this->force_enc : $enc;
 			switch ($enc) {
 				case ENC_ASCII: { // STEP B. While in ASCII encodation
 					if (($data_length > 1) AND ($pos < ($data_length - 1)) AND ($this->isCharMode(ord($data[$pos]), ENC_ASCII_NUM) AND $this->isCharMode(ord($data[$pos + 1]), ENC_ASCII_NUM))) {

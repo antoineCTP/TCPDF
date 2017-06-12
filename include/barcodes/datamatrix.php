@@ -241,28 +241,28 @@ class Datamatrix {
 	public function __construct($code,$forced_encoding = null) {
 		switch($forced_encoding){
 			case 'ENC_ASCII':
-				$this->force_enc = 'ENC_ASCII';
+				$this->force_enc = ENC_ASCII;
 				break;
 			case 'ENC_C40':
-				$this->force_enc = 'ENC_C40';
+				$this->force_enc = ENC_C40;
 				break;
 			case 'ENC_TXT':
-				$this->force_enc = 'ENC_TXT';
+				$this->force_enc = ENC_TXT;
 				break;
 			case 'ENC_X12':
-				$this->force_enc = 'ENC_X12';
+				$this->force_enc = ENC_X12;
 				break;
 			case 'ENC_EDF':
-				$this->force_enc = 'ENC_EDF';
+				$this->force_enc = ENC_EDF;
 				break;
 			case 'ENC_BASE256':
-				$this->force_enc = 'ENC_BASE256';
+				$this->force_enc = ENC_BASE256;
 				break;
 			case 'ENC_ASCII_EXT':
-				$this->force_enc = 'ENC_ASCII_EXT';
+				$this->force_enc = ENC_ASCII_EXT;
 				break;
 			case 'ENC_ASCII_NUM':
-				$this->force_enc = 'ENC_ASCII_NUM';
+				$this->force_enc = ENC_ASCII_NUM;
 				break;
 		}
 		$barcode_array = array();
@@ -553,6 +553,9 @@ class Datamatrix {
 	 * @protected
 	 */
 	protected function lookAheadTest($data, $pos, $mode) {
+		if(!empty($this->force_enc)){
+			return $this->force_enc;
+		}
 		$data_length = strlen($data);
 		if ($pos >= $data_length) {
 			return $mode;
